@@ -157,6 +157,10 @@ const GENERAL_RECOMMENDATIONS: RecommendationProduct[] = [
   }
 ];
 
+const BACKEND_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+  ? "http://127.0.0.1:5000/api"
+  : "/api";
+
 const App = () => {
   const [query, setQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -199,7 +203,7 @@ const App = () => {
     setAuthLoading(true);
     setAuthError(null);
     try {
-      const response = await fetch("http://127.0.0.1:5000/api/login", {
+      const response = await fetch(`${BACKEND_URL}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: loginEmail, password: loginPassword }),
@@ -233,7 +237,7 @@ const App = () => {
     setAuthLoading(true);
     setAuthError(null);
     try {
-      const response = await fetch("http://127.0.0.1:5000/api/register", {
+      const response = await fetch(`${BACKEND_URL}/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -249,7 +253,7 @@ const App = () => {
         throw new Error(data.error || "Registration failed.");
       }
       // Successful registration: auto login
-      const loginRes = await fetch("http://127.0.0.1:5000/api/login", {
+      const loginRes = await fetch(`${BACKEND_URL}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: regEmail, password: regPassword }),
@@ -294,7 +298,7 @@ const App = () => {
     setLoading(true);
     setAdvice(null);
     try {
-      const response = await fetch("http://127.0.0.1:5000/api/search", {
+      const response = await fetch(`${BACKEND_URL}/search`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query: activeQuery, category: cat }),
@@ -319,7 +323,7 @@ const App = () => {
     const formData = new FormData();
     formData.append("image", file);
     try {
-      const response = await fetch("http://127.0.0.1:5000/api/upload", {
+      const response = await fetch(`${BACKEND_URL}/upload`, {
         method: "POST",
         body: formData,
       });
