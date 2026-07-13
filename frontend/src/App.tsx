@@ -5,7 +5,6 @@ import ProductCard from "./Components/ProductCard";
 import Loader from "./Components/Loader";
 import CategoryNav from "./Components/CategoryNav";
 import { 
-  FiTrendingUp, 
   FiZap, 
   FiShield, 
   FiMessageSquare, 
@@ -401,7 +400,7 @@ const App = () => {
                 boxShadow: '0 4px 20px rgba(99,102,241,0.3)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center'
               }}>
-                <FiTrendingUp style={{ color: '#fff', width: 22, height: 22 }} />
+                <img src="/logo.png" alt="Smartbuy Logo" style={{ width: 22, height: 22, objectFit: 'contain' }} />
               </div>
               <span style={{ fontSize: '24px', fontWeight: 900, letterSpacing: '-0.04em', fontFamily: "'Outfit', sans-serif" }}>
                 SMARTBUY<span style={{ color: '#6366f1' }}>.</span>
@@ -887,7 +886,7 @@ const App = () => {
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}
             >
-              <FiTrendingUp style={{ color: '#fff', width: 20, height: 20 }} />
+              <img src="/logo.png" alt="Smartbuy Logo" style={{ width: 20, height: 20, objectFit: 'contain' }} />
             </div>
             <span
               style={{
@@ -1466,7 +1465,7 @@ const App = () => {
                   padding: '8px', borderRadius: '10px',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}>
-                  <FiTrendingUp style={{ color: '#fff', width: 16, height: 16 }} />
+                  <img src="/logo.png" alt="Smartbuy Logo" style={{ width: 16, height: 16, objectFit: 'contain' }} />
                 </div>
                 <span style={{ fontSize: '18px', fontWeight: 900, fontFamily: "'Outfit', system-ui, sans-serif", color: '#fff' }}>
                   SMARTBUY<span style={{ color: '#6366f1' }}>.</span>
