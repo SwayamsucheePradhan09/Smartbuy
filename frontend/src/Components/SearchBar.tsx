@@ -131,24 +131,6 @@ const SearchBar = ({ query, setQuery, onSearch, onImageUpload, isLoading }: Prop
           </button>
         </div>
       </div>
-
-      {/* Trust Indicators */}
-      <div style={{
-        display: 'flex', gap: '24px', justifyContent: 'center',
-        marginTop: '16px',
-        fontSize: '11px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em',
-        color: '#475569',
-      }}>
-        <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <span style={{ color: '#10b981', fontSize: '13px' }}>✓</span> Real-time
-        </span>
-        <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <span style={{ color: '#10b981', fontSize: '13px' }}>✓</span> 15+ Platforms
-        </span>
-        <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <span style={{ color: '#10b981', fontSize: '13px' }}>✓</span> Best Price
-        </span>
-      </div>
     </div>
   );
 };

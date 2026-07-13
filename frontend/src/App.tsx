@@ -23,6 +23,8 @@ const App = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [advice, setAdvice] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [showPrivacy, setShowPrivacy] = useState(false);
+  const [showTerms, setShowTerms] = useState(false);
 
   const calculateSmartScore = (price: number) => {
     if (products.length === 0) return 0;
@@ -136,7 +138,7 @@ const App = () => {
       >
         <div style={{
           maxWidth: '1280px', margin: '0 auto',
-          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+          display: 'flex', justifyContent: 'center', alignItems: 'center',
         }}>
           {/* Logo */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -160,49 +162,6 @@ const App = () => {
               SMARTBUY<span style={{ color: '#6366f1' }}>.</span>
             </span>
           </div>
-
-          {/* Right Side */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-            {/* Status Indicators */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-              <span style={{
-                display: 'flex', alignItems: 'center', gap: '6px',
-                fontSize: '10px', fontWeight: 800, textTransform: 'uppercase',
-                letterSpacing: '0.12em', color: '#10b981',
-              }}>
-                <span style={{
-                  width: 6, height: 6, borderRadius: '50%', background: '#10b981',
-                  boxShadow: '0 0 8px rgba(16,185,129,0.5)',
-                  display: 'inline-block',
-                  animation: 'pulse-soft 2s ease-in-out infinite',
-                }} />
-                15 Platforms Live
-              </span>
-              <span style={{
-                fontSize: '10px', fontWeight: 700, textTransform: 'uppercase',
-                letterSpacing: '0.12em', color: '#64748b',
-              }}>
-                Global Hub
-              </span>
-            </div>
-
-            {/* Get Extension Button */}
-            <button
-              style={{
-                background: 'linear-gradient(135deg, #6366f1, #7c3aed)',
-                color: '#fff', padding: '10px 24px', borderRadius: '12px',
-                fontWeight: 800, fontSize: '12px', border: 'none', cursor: 'pointer',
-                boxShadow: '0 4px 20px rgba(99,102,241,0.3)',
-                transition: 'all 0.3s ease',
-                fontFamily: "'Inter', system-ui, sans-serif",
-                letterSpacing: '0.02em',
-              }}
-              onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 30px rgba(99,102,241,0.4)'; }}
-              onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 20px rgba(99,102,241,0.3)'; }}
-            >
-              Get Extension
-            </button>
-          </div>
         </div>
       </nav>
 
@@ -217,15 +176,29 @@ const App = () => {
             transition={{ duration: 0.6 }}
             style={{
               fontFamily: "'Outfit', system-ui, sans-serif",
-              fontWeight: 900, letterSpacing: '-0.03em',
-              lineHeight: 0.95, marginBottom: '36px',
+              fontWeight: 900, letterSpacing: '-0.04em',
+              lineHeight: 1.1, marginBottom: '16px',
               fontSize: 'clamp(48px, 8vw, 96px)',
             }}
           >
-            <span style={{ color: '#fff' }}>Universal</span>
-            <br />
-            <span className="gradient-text" style={{ fontStyle: 'italic' }}>Price Sniper.</span>
+            <span className="gradient-text">Smartbuy.</span>
           </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            style={{
+              fontSize: '15px',
+              color: '#94a3b8',
+              maxWidth: '540px',
+              margin: '0 auto 36px',
+              lineHeight: 1.6,
+              fontWeight: 500,
+              fontFamily: "'Inter', system-ui, sans-serif",
+            }}
+          >
+            Compare real-time prices across major online retail stores instantly.
+          </motion.p>
 
           <SearchBar
             query={query}
@@ -248,38 +221,7 @@ const App = () => {
               transition={{ duration: 0.5 }}
               style={{ maxWidth: '1100px', margin: '0 auto' }}
             >
-              {/* AI Advice */}
-              {advice && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  style={{
-                    marginBottom: '40px', padding: '24px', borderRadius: '20px',
-                    background: 'linear-gradient(135deg, rgba(99,102,241,0.15), rgba(139,92,246,0.08))',
-                    border: '1px solid rgba(99,102,241,0.2)',
-                    display: 'flex', gap: '16px', alignItems: 'flex-start',
-                    backdropFilter: 'blur(20px)',
-                  }}
-                >
-                  <div style={{
-                    padding: '12px', background: 'rgba(99,102,241,0.2)', borderRadius: '14px',
-                    flexShrink: 0,
-                  }}>
-                    <FiMessageSquare style={{ width: 20, height: 20, color: '#a78bfa' }} />
-                  </div>
-                  <div>
-                    <div style={{
-                      fontSize: '10px', fontWeight: 800, textTransform: 'uppercase',
-                      letterSpacing: '0.2em', marginBottom: '6px', color: '#8b5cf6',
-                    }}>
-                      Shopping Advisor AI
-                    </div>
-                    <p style={{ fontSize: '14px', fontWeight: 500, lineHeight: 1.6, color: '#cbd5e1' }}>
-                      {advice}
-                    </p>
-                  </div>
-                </motion.div>
-              )}
+
 
               {/* Results Header */}
               <div style={{
@@ -431,31 +373,272 @@ const App = () => {
 
       {/* ══ Footer ══ */}
       <footer style={{
-        position: 'relative', zIndex: 10, padding: '48px 32px',
-        borderTop: '1px solid rgba(255,255,255,0.04)',
+        position: 'relative', zIndex: 10,
+        padding: '64px 32px 32px',
+        borderTop: '1px solid rgba(255,255,255,0.06)',
+        background: 'rgba(10,10,26,0.9)',
+        marginTop: '80px',
       }}>
         <div style={{
           maxWidth: '1280px', margin: '0 auto',
-          display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between',
-          alignItems: 'center', gap: '16px',
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', opacity: 0.3 }}>
-            <FiTrendingUp style={{ width: 16, height: 16 }} />
-            <span style={{ fontSize: '12px', fontWeight: 900, fontFamily: "'Outfit', system-ui, sans-serif" }}>SMARTBUY.</span>
-          </div>
-          <span style={{
-            fontSize: '10px', fontWeight: 700, color: '#334155',
-            textTransform: 'uppercase', letterSpacing: '0.3em',
+          {/* Main Footer Content */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+            gap: '48px',
+            paddingBottom: '40px',
+            borderBottom: '1px solid rgba(255,255,255,0.04)',
           }}>
-            Propelling Smart Commerce into 2026
-          </span>
-          <FiGithub
-            style={{ width: 20, height: 20, color: '#334155', cursor: 'pointer', transition: 'color 0.3s' }}
-            onMouseEnter={e => { (e.target as HTMLElement).style.color = '#6366f1'; }}
-            onMouseLeave={e => { (e.target as HTMLElement).style.color = '#334155'; }}
-          />
+            {/* Column 1: Brand */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div style={{
+                  background: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+                  padding: '8px', borderRadius: '10px',
+                  display: 'flex', alignItems: 'center', justifycontent: 'center',
+                }}>
+                  <FiTrendingUp style={{ color: '#fff', width: 16, height: 16 }} />
+                </div>
+                <span style={{ fontSize: '18px', fontWeight: 900, fontFamily: "'Outfit', system-ui, sans-serif", color: '#fff' }}>
+                  SMARTBUY<span style={{ color: '#6366f1' }}>.</span>
+                </span>
+              </div>
+              <p style={{ fontSize: '13px', color: '#94a3b8', lineHeight: 1.7, fontWeight: 500 }}>
+                SMARTBUY is a premium smart commerce aggregator engineered to compare real-time prices across major online shopping platforms and help you find the best deals.
+              </p>
+            </div>
+
+            {/* Column 2: Navigation */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <h4 style={{
+                fontSize: '11px', fontWeight: 800, color: '#94a3b8',
+                textTransform: 'uppercase', letterSpacing: '0.15em',
+              }}>
+                Navigation
+              </h4>
+              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '12px', padding: 0, margin: 0 }}>
+                <li>
+                  <a
+                    href="#"
+                    onClick={(e) => { e.preventDefault(); setProducts([]); setQuery(""); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                    style={{ fontSize: '13px', color: '#64748b', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}
+                    onMouseEnter={e => e.currentTarget.style.color = '#fff'}
+                    onMouseLeave={e => e.currentTarget.style.color = '#64748b'}
+                  >
+                    Dashboard
+                  </a>
+                </li>
+                <li>
+                  <span
+                    onClick={() => setShowPrivacy(true)}
+                    style={{ fontSize: '13px', color: '#64748b', textDecoration: 'none', fontWeight: 500, cursor: 'pointer', transition: 'color 0.2s' }}
+                    onMouseEnter={e => e.currentTarget.style.color = '#fff'}
+                    onMouseLeave={e => e.currentTarget.style.color = '#64748b'}
+                  >
+                    Privacy Policy
+                  </span>
+                </li>
+                <li>
+                  <span
+                    onClick={() => setShowTerms(true)}
+                    style={{ fontSize: '13px', color: '#64748b', textDecoration: 'none', fontWeight: 500, cursor: 'pointer', transition: 'color 0.2s' }}
+                    onMouseEnter={e => e.currentTarget.style.color = '#fff'}
+                    onMouseLeave={e => e.currentTarget.style.color = '#64748b'}
+                  >
+                    Terms of Use
+                  </span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Column 3: Founder */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <h4 style={{
+                fontSize: '11px', fontWeight: 800, color: '#94a3b8',
+                textTransform: 'uppercase', letterSpacing: '0.15em',
+              }}>
+                Founder
+              </h4>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <a
+                  href="https://www.swayamsuchee.dev/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    fontSize: '14px', fontWeight: 700, color: '#fff',
+                    textDecoration: 'none', transition: 'color 0.2s',
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.color = '#a78bfa'}
+                  onMouseLeave={e => e.currentTarget.style.color = '#fff'}
+                >
+                  Swayamsuchee Pradhan
+                </a>
+                <span style={{ fontSize: '12px', color: '#64748b', fontWeight: 500 }}>
+                  Founder & Creator
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Footer Bar */}
+          <div style={{
+            display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between',
+            alignItems: 'center', gap: '16px', paddingTop: '32px',
+          }}>
+            <span style={{ fontSize: '12px', color: '#64748b', fontWeight: 500 }}>
+              &copy; 2026 SMARTBUY. All rights reserved.
+            </span>
+            <div style={{ display: 'flex', gap: '24px' }}>
+              <span
+                onClick={() => setShowPrivacy(true)}
+                style={{ fontSize: '12px', color: '#64748b', cursor: 'pointer', fontWeight: 500, transition: 'color 0.2s' }}
+                onMouseEnter={e => e.currentTarget.style.color = '#fff'}
+                onMouseLeave={e => e.currentTarget.style.color = '#64748b'}
+              >
+                Privacy Policy
+              </span>
+              <span
+                onClick={() => setShowTerms(true)}
+                style={{ fontSize: '12px', color: '#64748b', cursor: 'pointer', fontWeight: 500, transition: 'color 0.2s' }}
+                onMouseEnter={e => e.currentTarget.style.color = '#fff'}
+                onMouseLeave={e => e.currentTarget.style.color = '#64748b'}
+              >
+                Terms of Use
+              </span>
+            </div>
+          </div>
         </div>
       </footer>
+
+      {/* Modals */}
+      <AnimatePresence>
+        {showPrivacy && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            style={{
+              position: 'fixed', inset: 0, zIndex: 100,
+              background: 'rgba(5,5,15,0.85)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              padding: '24px',
+            }}
+            onClick={() => setShowPrivacy(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.95, y: 20 }}
+              style={{
+                background: 'rgba(22,22,51,0.95)',
+                border: '1px solid rgba(255,255,255,0.08)',
+                borderRadius: '24px',
+                padding: '40px',
+                maxWidth: '640px',
+                width: '100%',
+                maxHeight: '80vh',
+                overflowY: 'auto',
+                boxShadow: '0 20px 50px rgba(0,0,0,0.5)',
+                color: '#cbd5e1',
+                fontFamily: "'Inter', system-ui, sans-serif",
+              }}
+              onClick={e => e.stopPropagation()}
+            >
+              <h2 style={{
+                fontSize: '28px', fontWeight: 900, marginBottom: '20px',
+                fontFamily: "'Outfit', system-ui, sans-serif", color: '#fff',
+              }}>
+                Privacy Policy
+              </h2>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', fontSize: '14px', lineHeight: 1.7 }}>
+                <p><strong>Effective Date:</strong> January 1, 2026</p>
+                <p>At SmartBuy, we value your privacy. This Privacy Policy describes how we handle information when you use our platform.</p>
+                <p><strong>1. Information Collection:</strong> SmartBuy does not require user accounts. We do not collect or store personal details. When you search for products, the queries are processed live to fetch prices and are not saved or associated with your identity.</p>
+                <p><strong>2. Uploaded Images:</strong> Any images uploaded for visual product search are stored temporarily in a secure directory to extract query names and are deleted immediately after the search completes.</p>
+                <p><strong>3. Third-Party Links:</strong> Our service displays redirect links to third-party retail platforms. We are not responsible for the privacy practices or contents of those external websites.</p>
+                <p><strong>4. Updates:</strong> We may revise this Privacy Policy periodically. Continued use of our service signifies your agreement to these terms.</p>
+              </div>
+              <button
+                onClick={() => setShowPrivacy(false)}
+                style={{
+                  marginTop: '32px', padding: '12px 28px', borderRadius: '12px',
+                  border: 'none', background: 'linear-gradient(135deg, #6366f1, #7c3aed)',
+                  color: '#fff', fontSize: '13px', fontWeight: 800, cursor: 'pointer',
+                  boxShadow: '0 4px 15px rgba(99,102,241,0.25)', width: '100%',
+                }}
+              >
+                Close
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+
+        {showTerms && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            style={{
+              position: 'fixed', inset: 0, zIndex: 100,
+              background: 'rgba(5,5,15,0.85)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              padding: '24px',
+            }}
+            onClick={() => setShowTerms(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.95, y: 20 }}
+              style={{
+                background: 'rgba(22,22,51,0.95)',
+                border: '1px solid rgba(255,255,255,0.08)',
+                borderRadius: '24px',
+                padding: '40px',
+                maxWidth: '640px',
+                width: '100%',
+                maxHeight: '80vh',
+                overflowY: 'auto',
+                boxShadow: '0 20px 50px rgba(0,0,0,0.5)',
+                color: '#cbd5e1',
+                fontFamily: "'Inter', system-ui, sans-serif",
+              }}
+              onClick={e => e.stopPropagation()}
+            >
+              <h2 style={{
+                fontSize: '28px', fontWeight: 900, marginBottom: '20px',
+                fontFamily: "'Outfit', system-ui, sans-serif", color: '#fff',
+              }}>
+                Terms of Use
+              </h2>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', fontSize: '14px', lineHeight: 1.7 }}>
+                <p><strong>Effective Date:</strong> January 1, 2026</p>
+                <p>Welcome to SmartBuy. By accessing or using our platform, you agree to comply with and be bound by the following terms.</p>
+                <p><strong>1. Intellectual Property & Aggregation:</strong> SmartBuy provides search results by compiling publicly available pricing data. All trademarked brand names, logos, and product information displayed are properties of their respective online stores.</p>
+                <p><strong>2. Fair Use:</strong> You agree to use the service only for personal, non-commercial price comparison purposes. Automated scraping, crawling, or abuse of our search engines is strictly prohibited.</p>
+                <p><strong>3. Disclaimer of Liability:</strong> SmartBuy does not sell products directly. We make no guarantees regarding price accuracy, inventory availability, shipping speeds, or product quality on external platforms.</p>
+                <p><strong>4. Governing Law:</strong> These terms shall be governed by and construed in accordance with the laws of your local jurisdiction.</p>
+              </div>
+              <button
+                onClick={() => setShowTerms(false)}
+                style={{
+                  marginTop: '32px', padding: '12px 28px', borderRadius: '12px',
+                  border: 'none', background: 'linear-gradient(135deg, #6366f1, #7c3aed)',
+                  color: '#fff', fontSize: '13px', fontWeight: 800, cursor: 'pointer',
+                  boxShadow: '0 4px 15px rgba(99,102,241,0.25)', width: '100%',
+                }}
+              >
+                Close
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
