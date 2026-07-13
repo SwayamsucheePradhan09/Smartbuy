@@ -5,23 +5,34 @@ from flask import Blueprint, request, jsonify
 auth_bp = Blueprint("auth", __name__)
 USERS_FILE = os.path.join(os.path.dirname(os.path.dirname(__file__)), "users.json")
 
+IN_MEMORY_USERS = []
+
 def load_users():
+    global IN_MEMORY_USERS
     if not os.path.exists(USERS_FILE):
-        return []
+        return IN_MEMORY_USERS
     try:
         with open(USERS_FILE, "r") as f:
-            return json.load(f)
-    except Exception:
-        return []
+            loaded = json.load(f)
+            # Sync in-memory list
+            IN_MEMORY_USERS = loaded
+            return loaded
+    except Exception as e:
+        print(f"Failed to read users.json, using in-memory list: {e}")
+        return IN_MEMORY_USERS
 
 def save_users(users):
+    global IN_MEMORY_USERS
+    IN_MEMORY_USERS = users
     try:
         with open(USERS_FILE, "w") as f:
             json.dump(users, f, indent=4)
         return True
     except Exception as e:
-        print(f"Error saving users: {e}")
-        return False
+        # On serverless platforms like Vercel, writing to disk fails.
+        # We fall back to in-memory storage and return True.
+        print(f"Failed to write users.json, falling back to in-memory: {e}")
+        return True
 
 @auth_bp.route("/register", methods=["POST", "OPTIONS"])
 def register():
