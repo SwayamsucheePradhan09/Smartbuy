@@ -26,3 +26,8 @@ Thumbs.db
 # Testing
 coverage/
 .npm/
+
+# User data
+users.json
+backend/users.json
+
