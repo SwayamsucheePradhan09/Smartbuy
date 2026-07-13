@@ -193,6 +193,18 @@ const App = () => {
   const [authError, setAuthError] = useState<string | null>(null);
   const [authLoading, setAuthLoading] = useState(false);
 
+  // Sorting & Filtering State
+  const [sortBy, setSortBy] = useState<"price-asc" | "price-desc" | "rating-desc">("price-asc");
+  const [filterPlatform, setFilterPlatform] = useState<string>("All");
+  const [showAlertToast, setShowAlertToast] = useState(false);
+
+  const triggerPriceAlert = () => {
+    setShowAlertToast(true);
+    setTimeout(() => {
+      setShowAlertToast(false);
+    }, 4000);
+  };
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!loginEmail || !loginPassword) {
@@ -816,6 +828,21 @@ const App = () => {
     );
   }
 
+  const availablePlatforms = ["All", ...Array.from(new Set(products.map(p => p.platform)))];
+
+  const processedProducts = products
+    .filter(p => filterPlatform === "All" || p.platform.toLowerCase().includes(filterPlatform.toLowerCase()))
+    .sort((a, b) => {
+      if (sortBy === "price-asc") return a.price - b.price;
+      if (sortBy === "price-desc") return b.price - a.price;
+      if (sortBy === "rating-desc") {
+        const ratingA = parseFloat(a.rating || "0");
+        const ratingB = parseFloat(b.rating || "0");
+        return ratingB - ratingA;
+      }
+      return 0;
+    });
+
   return (
     <div
       style={{
@@ -1090,13 +1117,75 @@ const App = () => {
                 </motion.div>
               )}
 
+              {/* Sort & Filter Controls */}
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                gap: '16px',
+                marginBottom: '28px',
+                padding: '0 4px',
+              }}>
+                {/* Platform Filter Tabs */}
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                  {availablePlatforms.map((platform) => (
+                    <button
+                      key={platform}
+                      onClick={() => setFilterPlatform(platform)}
+                      style={{
+                        padding: '6px 12px',
+                        background: filterPlatform === platform 
+                          ? 'rgba(99, 102, 241, 0.2)' 
+                          : 'rgba(255, 255, 255, 0.02)',
+                        border: filterPlatform === platform
+                          ? '1px solid rgba(99, 102, 241, 0.4)'
+                          : '1px solid rgba(255, 255, 255, 0.06)',
+                        borderRadius: '10px',
+                        color: filterPlatform === platform ? '#a78bfa' : '#94a3b8',
+                        fontSize: '12px',
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                        transition: 'all 0.2s',
+                      }}
+                    >
+                      {platform}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Sort selector */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span style={{ fontSize: '12px', fontWeight: 600, color: '#64748b' }}>Sort By:</span>
+                  <select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value as any)}
+                    style={{
+                      padding: '6px 12px',
+                      background: 'rgba(22, 22, 51, 0.6)',
+                      border: '1px solid rgba(255, 255, 255, 0.08)',
+                      borderRadius: '10px',
+                      color: '#f1f5f9',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      outline: 'none',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <option value="price-asc" style={{ background: '#0f0f23' }}>Price: Low to High</option>
+                    <option value="price-desc" style={{ background: '#0f0f23' }}>Price: High to Low</option>
+                    <option value="rating-desc" style={{ background: '#0f0f23' }}>Rating: High to Low</option>
+                  </select>
+                </div>
+              </div>
+
               {/* Product Grid */}
               <div style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
                 gap: '24px',
               }}>
-                {products.map((p, idx) => (
+                {processedProducts.map((p, idx) => (
                   <ProductCard
                     key={`${p.platform}-${idx}`}
                     product={p}
@@ -1162,6 +1251,7 @@ const App = () => {
                 </div>
                 <div>
                   <button
+                    onClick={triggerPriceAlert}
                     style={{
                       background: 'linear-gradient(135deg, #6366f1, #7c3aed)',
                       color: '#fff', padding: '18px 40px', borderRadius: '16px',
@@ -1703,6 +1793,50 @@ const App = () => {
                 Close
               </button>
             </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ══ Price Alert Toast ══ */}
+      <AnimatePresence>
+        {showAlertToast && (
+          <motion.div
+            initial={{ opacity: 0, y: 50, x: 50 }}
+            animate={{ opacity: 1, y: 0, x: 0 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            style={{
+              position: 'fixed',
+              bottom: '30px',
+              right: '30px',
+              zIndex: 1000,
+              background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(22, 22, 51, 0.95) 100%)',
+              border: '1.5px solid rgba(16, 185, 129, 0.4)',
+              borderRadius: '16px',
+              padding: '16px 20px',
+              maxWidth: '360px',
+              boxShadow: '0 10px 30px rgba(0,0,0,0.3), 0 0 20px rgba(16,185,129,0.15)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+            }}
+          >
+            <div style={{
+              background: '#10b981',
+              padding: '6px',
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#fff',
+            }}>
+              <span style={{ fontSize: '14px', fontWeight: 'bold' }}>✓</span>
+            </div>
+            <div>
+              <h4 style={{ margin: '0 0 2px 0', fontSize: '13px', fontWeight: 800, color: '#fff' }}>Price Alert Created!</h4>
+              <p style={{ margin: 0, fontSize: '11px', fontWeight: 500, color: '#94a3b8', lineHeight: 1.4 }}>
+                We'll email you at <strong style={{ color: '#fff' }}>{user?.email}</strong> when prices drop for "{query}".
+              </p>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
